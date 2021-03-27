@@ -6,6 +6,25 @@ const token = '1711711266:AAFwPspZUCeFsO9zCJ9UdPQP12XMnM7Qx9c';
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, {polling: true});
 
+bot.on('message', function(msg){
+    
+  var chatId = msg.chat.id;
+  var chatitle = msg.chat.title;
+  
+  if (msg.new_chat_members != undefined){
+  
+      var nameNewMember = msg.new_chat_member.first_name;
+  
+      bot.sendMessage(chatId, "Hola " + nameNewMember + ", bienvenido, que se le ofrece? " + chatitle);
+  }
+  else if (msg.left_chat_member != undefined){
+  
+      var nameLeftMember = msg.left_chat_member.first_name;
+      
+      bot.sendMessage(chatId, nameLeftMember + " abandonó el grupo por pirobo")
+  }
+});
+
 // Matches "/echo [whatever]"
 bot.onText(/\/echo (.+)/, (msg, match) => {
   // 'msg' is the received Message from Telegram
@@ -32,4 +51,5 @@ bot.on('message', (msg) => {
 
   // send a message to the chat acknowledging receipt of their message
   bot.sendMessage(chatId, '');
+
 });
